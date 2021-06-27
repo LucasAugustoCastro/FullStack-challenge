@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { getRepository } from 'typeorm';
+import {  response, Router } from 'express';
+import { getRepository, getTreeRepository, RepositoryNotFoundError, RepositoryNotTreeError } from 'typeorm';
 import Turma from '../models/Turma';
 import CreateClassService from '../services/CreateClassService';
 import CreateStudentClassService from '../services/CreateStudentClassService';
@@ -26,6 +26,14 @@ turmaRouter.get('/:id', async (request, response)=>{
 
   return response.status(200).json(turma);
 });
+
+turmaRouter.get('/escola/:idEscola', async (request, response) => {
+  const {idEscola} = request.params;
+  const turmaRepository = getRepository(Turma);
+  const turmas = await turmaRepository.find({where: {id_escola: idEscola}})
+
+  return response.status(200).json(turmas);
+})
 
 
 turmaRouter.post('/', async (request, response) =>{
@@ -59,8 +67,59 @@ turmaRouter.post('/aluno', async (request, response) => {
 
     return response.status(200).json(classStudent);
   } catch(err){
-    return response.status(400).json({erro: err.message});
+    return response.status(400).json({error: err.message});
   }
+});
+
+turmaRouter.delete('/professor/:idTurma', async (request, response) => {
+  try{
+    const { idTurma } = request.params;
+
+    const professorRepository = getRepository(Turma);
+    
+    const turma = await professorRepository.findOne(idTurma);
+
+    if(!turma){
+      throw new Error('The class does not exist');
+    }
+
+    await professorRepository.save({
+      id: turma.id,
+      id_professor: null,
+      id_escola: turma.id_escola,
+      nome: turma.nome,
+      hora_inicio: turma.hora_inicio,
+      hora_fim: turma.hora_fim,
+    });
+    return response.status(201).send();
+
+  }catch(err){
+    return response.status(400).json({error: err.message})
+  }
+})
+
+turmaRouter.put('/professor/:idTurma', async (request, response) => {
+  const { idTurma } = request.params;
+  const { id_professor } = request.body;
+
+  const professorRepository = getRepository(Turma);
+    
+    const turma = await professorRepository.findOne(idTurma);
+
+    if(!turma){
+      throw new Error('The class does not exist');
+    }
+
+    const newClassTeacher = await professorRepository.save({
+      id: turma.id,
+      id_professor: id_professor,
+      id_escola: turma.id_escola,
+      nome: turma.nome,
+      hora_inicio: turma.hora_inicio,
+      hora_fim: turma.hora_fim,
+    });
+    return response.status(200).json(newClassTeacher);
+
 })
 
 export default turmaRouter;

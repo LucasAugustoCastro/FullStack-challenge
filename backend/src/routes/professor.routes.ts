@@ -1,10 +1,28 @@
 import { Router } from 'express';
+import { getRepository } from 'typeorm';
+import ensureDirector from '../middleware/ensureDirector';
+import Professor from '../models/Professor';
 import CreateTeacherService from '../services/CreateTeacherService';
 import LoginTeacherService from '../services/LoginTeacherService';
 
 const professorRouter = Router();
 
-professorRouter.post('/', async (request, response) =>{
+
+professorRouter.get('/:id', async (request, response) => {
+  try{
+    const {id} = request.params;
+
+    const professorRepository = getRepository(Professor);
+
+    const professor = professorRepository.findOne(id);
+
+    return response.status(200).json(professor);
+  }catch(err){
+    return response.status(400).json({ error: err.message})
+  }
+})
+
+professorRouter.post('/' , async (request, response) =>{
   try{
     const {nome, cpf, telefone, email, password} = request.body;
 

@@ -16,8 +16,9 @@ export class CreateTurma1624417389588 implements MigrationInterface {
                     },
                     { 
                         name: 'id_professor',
+                        
                         type: 'uuid',
-
+                        isNullable: true,
                     },
                     { 
                         name: 'id_escola',

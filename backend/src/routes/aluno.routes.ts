@@ -1,9 +1,22 @@
 import { Router } from 'express';
 
 import CreateAlunoService from '../services/CreateStudentService';
+import GetAllStudentsInClassService from '../services/GetAllStudentsInClassService';
 import LoginAlunoService from '../services/LoginAlunoService';
 
 const alunoRouter = Router();
+
+alunoRouter.get('/:idTurma', async (request, response) => {
+  try{
+    const {idTurma} = request.params;
+    const allStudentsInClass = new GetAllStudentsInClassService();
+    const students = await allStudentsInClass.execute({id_turma: idTurma});
+
+    return response.status(200).json(students);
+  }catch(err){
+    return response.status(400).json({error : err.message})
+  }
+})
 
 alunoRouter.post('/', async (request, response) =>{
   try{

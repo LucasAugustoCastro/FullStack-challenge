@@ -22,7 +22,6 @@ class CreateAlunoService {
     const pessoa = await createPerson.execute({nome, cpf, telefone, email, password});
 
     const alunoRepository = getRepository(Aluno);
-    console.log(nome_responsavel);
     const aluno = alunoRepository.create({id_pessoa: pessoa.id, nome_responsavel, telefone_responsavel})
 
     await alunoRepository.save(aluno);

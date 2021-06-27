@@ -14,7 +14,7 @@ class Turma {
   professor!: Professor;
 
   @Column()
-  id_professor!: string;
+  id_professor!: string|null;
 
   @ManyToOne(() => Escolas, escola => escola, { eager: true, cascade: true })
   @JoinColumn({ name: 'id_escola' })
