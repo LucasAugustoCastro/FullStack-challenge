@@ -74,6 +74,7 @@ turmaRouter.post('/aluno', async (request, response) => {
 turmaRouter.delete('/professor/:idTurma', async (request, response) => {
   try{
     const { idTurma } = request.params;
+    console.log('Id Turma delete: ' + idTurma);
 
     const professorRepository = getRepository(Turma);
     
@@ -101,6 +102,9 @@ turmaRouter.delete('/professor/:idTurma', async (request, response) => {
 turmaRouter.put('/professor/:idTurma', async (request, response) => {
   const { idTurma } = request.params;
   const { id_professor } = request.body;
+
+  console.log('Id Turma put: ' + idTurma);
+  console.log('Id professor put: ' + id_professor);
 
   const professorRepository = getRepository(Turma);
     

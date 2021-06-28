@@ -2,7 +2,6 @@ import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Up
 import Diretor from './Diretor';
 import Aluno from './Aluno';
 import Professor from './Professor';
-import Escolas from './Escola';
 
 @Entity('Pessoas')
 class Pessoas {

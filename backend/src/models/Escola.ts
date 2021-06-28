@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import Diretor from './Diretor';
+import Professor from './Professor';
 import Turma from './Turma';
 
 @Entity('Escolas')
@@ -27,6 +28,8 @@ class Escolas {
   @OneToMany(() => Turma, turma => turma.escola)
   turma!: Turma;
 
+  @OneToMany(() => Professor, professor => professor.escola)
+  professor!: Professor;
 
 
 }

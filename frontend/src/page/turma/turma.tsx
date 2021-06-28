@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
-import {Container, Header, HeaderContent, Itens, ItensContent, Drawer, Content, TurmaContent, Professor, Aluno, TurmaHead} from './styles';
+import {Container, Content, TurmaContent, Professor, Aluno, TurmaHead} from './styles';
 
-import { FiPower, FiMenu, FiChevronLeft } from 'react-icons/fi';
-import 'react-modern-drawer/dist/index.css'
-
-import logoImg from '../../assets/logo.png';
+import { FiChevronLeft } from 'react-icons/fi';
 import { Link, useRouteMatch } from "react-router-dom";
+
 import api from "../../service/api";
+import Header from '../../Components/Header';
+import Menu from '../../Components/Menu';
+
 
 interface ITurma{
   id: string;
@@ -38,7 +39,7 @@ interface Alunos{
   }
 }
 interface TurmaParams{
-  idEscola: string;
+  idTurma: string;
 }
 
 const Turma: React.FC = () => {  
@@ -56,55 +57,38 @@ const Turma: React.FC = () => {
   const { params } = useRouteMatch<TurmaParams>();
 
   useEffect(() => {
-    api.get(`/turma/escola/fc1e5a2c-2c92-4a4a-b22b-fe3f1eebea32`)
+    api.get(`/turma/escola/f8695fb3-0d7d-4d1f-8414-3992deb7b1ac`)
       .then(response => {
         setTurmas(response.data);
       });
   }, []);
 
   useEffect(() => {
-    api.get(`/turma/${params.idEscola}`)
+    api.get(`/turma/${params.idTurma}`)
       .then(response=> {
         setTurma(response.data);
       })
-  }, [params.idEscola]);
+  }, [params.idTurma]);
 
   useEffect(() => {
-      api.get(`/aluno/${params.idEscola}`)
+      api.get(`/aluno/${params.idTurma}`)
       .then(response => {
         setAlunos(response.data);
       });
-  }, [params.idEscola])
+  }, [params.idTurma])
 
 
   return (
     <Container>
-      <Header>
-          <HeaderContent>
-            <button onClick={toggleDrawer}><FiMenu /></button>
-            <div>
-              <img src={logoImg} alt="" />
-              <h1>Nome Escola</h1>
-            </div>
-            <button><FiPower/></button>
-          </HeaderContent>
-      </Header>
+      <Header toggleDrawer={toggleDrawer}/>
 
-      <Drawer open={isOpen} onClick={toggleDrawer}>
-        <Itens>
-          {turmas.map(turmas => (
-            <ItensContent key={turmas.id}><Link to={`${turmas.id}`}>{turmas.nome}</Link></ItensContent>
-
-          ))}
-          
-        </Itens>
-      </Drawer>
+      <Menu toggleDrawer={toggleDrawer} turmas={turmas} isOpen={isOpen} />
       <Content>
 
       <TurmaContent>
         <TurmaHead>
           <div>
-            <Link to={`/diretor/turma/editar`}>Editar</Link>
+            <Link to={`/diretor/turma/editar/${params.idTurma}`}>Editar</Link>
           </div>
           <div>
             <Link to={`/diretor/dashboard`}><FiChevronLeft size={16}/> Voltar</Link>

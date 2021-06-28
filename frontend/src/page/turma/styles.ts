@@ -7,40 +7,6 @@ interface navProps {
 export const Container = styled.div`
 `;
 
-export const Header = styled.header`
-  padding: 20px;
-  background: #28262e;
-  position: relative;
-`;
-
-export const HeaderContent = styled.div`
-  margin: 0 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  div{
-    display:flex;
-    > img {
-      height: 80px;
-    }
-
-    h1{
-      margin-left: 20px;  
-      color: #999591;
-    }
-  }
-
-  button {
-    /* margin-left: auto; */
-    background: transparent;
-    border: 0;
-    svg {
-      color: #999591;
-      width: 30px;
-      height: 30px;
-    }
-  }
-`;
 export const Drawer = styled.nav<navProps>`
 
 background-color: #3D434F;

@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
-import {Container, Header, HeaderContent, Itens, ItensContent, Drawer, Content, Escola} from './styles';
+import {Container, Content, Escola} from './styles';
 
-import { FiPower, FiMenu } from 'react-icons/fi';
-import 'react-modern-drawer/dist/index.css'
 
-import logoImg from '../../assets/logo.png';
-import { Link } from "react-router-dom";
 import api from "../../service/api";
+import Header from '../../Components/Header'
+import Menu from '../../Components/Menu';
 
 interface Turmas{
   id: string;
@@ -23,7 +21,7 @@ const DiretorDashboard: React.FC = () => {
 
   useEffect(() => {
     api
-      .get(`/turma/escola/fc1e5a2c-2c92-4a4a-b22b-fe3f1eebea32`, {
+      .get(`/turma/escola/f8695fb3-0d7d-4d1f-8414-3992deb7b1ac`, {
         
       })
       .then(response => {
@@ -33,26 +31,10 @@ const DiretorDashboard: React.FC = () => {
 
   return (
     <Container>
-      <Header>
-          <HeaderContent>
-            <button onClick={toggleDrawer}><FiMenu /></button>
-            <div>
-              <img src={logoImg} alt="" />
-              <h1>Nome Escola</h1>
-            </div>
-            <button><FiPower/></button>
-          </HeaderContent>
-      </Header>
+      <Header toggleDrawer={toggleDrawer}/>
 
-      <Drawer open={isOpen} onClick={toggleDrawer}>
-        <Itens>
-          {turmas.map(turma => (
-            <ItensContent key={turma.id}><Link to={`turma/${turma.id}`}>{turma.nome}</Link></ItensContent>
+      <Menu toggleDrawer={toggleDrawer} turmas={turmas} isOpen={isOpen} />
 
-          ))}
-          
-        </Itens>
-      </Drawer>
       <Content>
 
       <Escola>
